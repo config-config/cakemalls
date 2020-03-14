@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.losemen.cakemall.mapper.UsersMapper">
+    <select id="getAllUsers" resultType="usersVO" >
+        select * from users
+    </select>
+
+    <!--判断用户是否存在-->
+    <select id="userNameIsTrue" resultType="int" parameterType="java.lang.String">
+        select count(*) from users where uname=#{uname}
+    </select>
+    <!--判断用户名和密码是否匹配-->
+    <select id="userLogin" resultType="usersVO" parameterType="java.lang.String">
+        select uid,upassword from users where uname=#{uname}
+    </select>
+    <!--根据用户id获取用户信息-->
+    <select id="getUserInfoById" resultType="usersVO" parameterType="int">
+        select * from users where uid=#{uid};
+    </select>
+    <!--注册用户-->
+    <insert id="insUser" parameterType="usersVO">
+        insert into users(uname,upassword,idadmin,uimg,uemail)
+        values (#{uname},#{upassword},#{idadmin},#{uimg},#{uemail})
+    </insert>
+    <!--用户修改密码-->
+    <update id="updUpassword">
+        update users set upassword=#{upassword} where uid=#{uid}
+    </update>
+    <!--根据uid查找密码-->
+    <select id="getUpasswordById" parameterType="int" resultType="java.lang.String">
+        select upassword from users where uid=#{uid}
+    </select>
+    <!--根据uid修改uimg-->
+    <update id="updUimages">
+        update users set  uimg=#{uimg}  where  uid=#{uid};
+    </update>
+
+
+
+
+
+</mapper>

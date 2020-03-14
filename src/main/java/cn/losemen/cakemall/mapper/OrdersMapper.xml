@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.losemen.cakemall.mapper.OrdersMapper">
+    <!--添加订单-->
+    <insert id="insOrder" parameterType="ordersVO">
+        insert into orders (uid, gid, ogtitle, ogimg, ogsize, ogprice, ogcount, ogstatus, otime)
+        values (#{uid},#{gid},#{ogtitle},#{ogimg},#{ogsize},#{ogprice},#{ogcount},#{ogstatus},#{otime});
+    </insert>
+    <!--根据uid查找订单-->
+    <select id="getUserOrders" parameterType="int" resultType="ordersVO">
+        select * from orders where uid=#{uid};
+    </select>
+    <!--修改订单的状态-->
+    <update id="updOrderstatus">
+        update orders set  ogstatus=#{ogstatus}  where oid=#{oid};
+    </update>
+    <!--查找订单-->
+    <select id="selByOrders" resultType="ordersVO">
+        select * from orders
+        <where>
+            <if test="uid != 0">
+                and uid=#{uid}
+            </if>
+            <if test="gid != 0">
+                and gid=#{gid}
+            </if>
+            <if test="otime1 != 0">
+                and otime between #{otime1} and #{otime2}
+            </if>
+        </where>
+        order by otime DESC limit #{start}, 20  ;
+    </select>
+    <!--查找全部订单-->
+    <select id="selOrdersByOtime" resultType="ordersVO">
+        select * from orders where otime between #{otime1} and #{otime2} order by otime DESC
+    </select>
+</mapper>

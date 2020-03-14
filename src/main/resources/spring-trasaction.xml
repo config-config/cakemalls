@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress ALL -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- 获取事务管理器 -->
+    <bean id="DataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!-- 配置通知 -->
+    <tx:advice id="myadvice" transaction-manager="DataSourceTransactionManager">
+        <tx:attributes>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="upt*" propagation="REQUIRED"/>
+            <tx:method name="ins*" propagation="REQUIRED"/>
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="show*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="sel*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 配置aop -->
+    <aop:config>
+        <aop:pointcut expression="execution(* cn.losemen.cakemall.mapper.*.*(..))" id="mycut"/>
+        <aop:advisor advice-ref="myadvice" pointcut-ref="mycut"/>
+    </aop:config>
+</beans>

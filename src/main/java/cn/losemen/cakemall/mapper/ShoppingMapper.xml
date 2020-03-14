@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.losemen.cakemall.mapper.ShoppingMapper">
+    <!--添加购物车商品-->
+    <insert id="insShoppiing" parameterType="shoppingVO">
+        insert into shopping(gid,sgtitle,sgimg,sgsize,sgprice,sgcount,sgstatus,uid)
+        values (#{gid},#{sgtitle},#{sgimg},#{sgsize},#{sgprice},#{sgcount},#{sgstatus},#{uid})
+    </insert>
+    <!--修改购物车中的数量-->
+    <update id="updShoppingCount">
+        update shopping set sgcount=#{sgcount} where sid=#{sid}
+    </update>
+    <!--根据用户id获取购物车的数据-->
+    <select id="getShoppingById" parameterType="int" resultType="shoppingVO">
+        select * from shopping where uid=#{uid}
+    </select>
+    <!--根据商品gid和商品的大小 sgsize 获取购物车中的商品sid-->
+    <select id="getShoppingSid" resultType="int">
+        select sid from shopping where gid=#{gid} and sgsize=#{sgsize}
+    </select>
+    <!--修改购物车商品中的状态-->
+    <update id="updShoppinfStatus">
+        update shopping set sgstatus=#{sgstatus} where sid=#{sid}
+    </update>
+    <!--根据sid删除购物车中的商品-->
+    <delete id="delShoppingById" parameterType="int">
+        delete from shopping where sid=#{sid}
+    </delete>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/mvc
+http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 开启注解驱动 -->
+    <mvc:annotation-driven>
+        <!-- json数据转化 -->
+        <mvc:message-converters>
+            <!-- 字符串处理 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+            <!-- json其他类型转换 -->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!-- 配置控制器扫描器 -->
+    <context:component-scan base-package="cn.losemen.cakemall.controller"></context:component-scan>
+    <!-- 视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <!-- 配置前缀和后缀 -->
+    <property name="suffix" value=".html"></property>
+</bean>
+    <!-- 上传文件时需要用到的分解层，默认将编码转为urf-8,设置最大上传容量 ,最大内存-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="maxUploadSize" value="102400000" />
+        <property name="maxInMemorySize" value="4096" />
+    </bean>
+</beans>

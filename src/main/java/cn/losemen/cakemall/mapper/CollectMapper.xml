@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.losemen.cakemall.mapper.CollectMapper">
+    <!--收藏商品-->
+    <insert id="addColect" parameterType="collectVo">
+        insert into collect(uid, gid, cgtitle, cgprice, cgimg,cgcollect)
+        values (#{uid},#{gid},#{cgtitle},#{cgprice},#{cgimg},#{cgcollect})
+    </insert>
+    <!--取消收藏-->
+    <delete id="delColect" parameterType="int">
+        delete from collect where cid=#{cid}
+    </delete>
+    <!--获取收藏商品的cid-->
+    <select id="getCollectCid" parameterType="int" resultType="int">
+        select ifnull(max(cid),0) from collect where gid=#{gid} and uid=#{uid}
+    </select>
+    <!--根据用户表id获取收藏商品信息-->
+    <select id="getAllCollectById" resultType="collectVo" parameterType="int">
+        select * from collect where uid=#{uid} order by cgcollect
+    </select>
+    <!--修改商品的信息-->
+    <update id="updGcollect">
+        update goods set gcollect=#{gcollect} where gid=#{gid}
+    </update>
+    <!--修改收藏商品的信息-->
+    <update id="updCgcollect">
+        update collect set cgcollect=#{cgcollect} where cid=#{cid}
+    </update>
+
+</mapper>
